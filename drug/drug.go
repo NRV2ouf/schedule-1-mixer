@@ -10,6 +10,8 @@ type Drug struct {
 // Add adds an Ingredient to a drug. It updates its Effects.
 // It returns a boolean indicating if the operation did something.
 func (d *Drug) Add(i Ingredient) {
+	d.ingredients = append(d.ingredients, i)
+
 	for _, r := range mixMap[i] {
 		d.effects = r.react(d.effects)
 	}
@@ -36,7 +38,7 @@ func (d Drug) GetBasePrice() int {
 func (d Drug) GetPrice() int {
 	m := 1.
 	for _, e := range d.GetEffects() {
-		m *= effectsMultipliers[e]
+		m += effectsMultipliers[e]
 	}
 	return int(m * float64(d.basePrice))
 }
